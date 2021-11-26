@@ -1,3 +1,5 @@
+using System.Diagnostics;
+
 namespace MazeProject
 { 
     public partial class Form1 : Form
@@ -11,6 +13,7 @@ namespace MazeProject
         private int[] player = { 0, 0 };
         private int[] goal;
         private Random RNG = new Random();
+        bool[] keyPressed = {false, false, false, false};
 
         public Form1()
 		{
@@ -46,20 +49,43 @@ namespace MazeProject
                         grid[x, y] = false;
                 }
             }
+            //grid[10, 10] = true; this removes the wall
+            while (pathFind(player,goal) == false)
+            {
+                grid[RNG.Next(0, GRID_WIDTH), RNG.Next(0, GRID_HEIGHT)] = true;
+            }
             timer1.Enabled = true;            
         }
 
+
         private void timer1_Tick(object sender, EventArgs e)
         {
+            //W
+            if (keyPressed[0] && player[1] > 0)
+                if (grid[player[0], player[1]-1] == true) //stops player from hitting wall
+                    player[1] -= 1;
+            //A
+            if (keyPressed[1] && player[0] > 0)
+                if (grid[player[0] - 1, player[1]] == true) //stops player from hitting wall
+                    player[0] -= 1;
+            //S
+            if (keyPressed[2] && player[1] < GRID_HEIGHT - 1)
+                if (grid[player[0], player[1]+1] == true) //stops player from hitting wall
+                    player[1] += 1;
+            //D
+            if (keyPressed[3] && player[0] < GRID_WIDTH - 1)
+                if(grid[player[0]+1,player[1]] == true) //stops player from hitting wall
+                    player[0] += 1;
+
             Bitmap b = new Bitmap(pictureBox1.Width, pictureBox1.Height);
             Graphics g = Graphics.FromImage(b);
             for (int x = 0; x < grid.GetLength(0); x++)
             {
                 for (int y = 0; y < grid.GetLength(1); y++)
                 {
-                    if(grid[x, y])
+                    if(grid[x, y]) // If true
                         g.FillRectangle(Brushes.White, x*GRID_SIZE, y*GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                    else
+                    else //If false
                         g.FillRectangle(Brushes.Black, x*GRID_SIZE, y*GRID_SIZE, GRID_SIZE, GRID_SIZE);
                     if(x == goal[0] && y == goal[1])
                         g.FillRectangle(Brushes.Red, x * GRID_SIZE, y * GRID_SIZE, GRID_SIZE, GRID_SIZE);
@@ -68,6 +94,87 @@ namespace MazeProject
                 }
             }
             pictureBox1.Image = b;
+        }
+
+        private bool pathFind(int[] startPoint, int[] endPoint)
+        {
+            Queue<int[]> q = new Queue<int[]>();
+            q.Enqueue(new int[] { startPoint[0], startPoint[1] });
+            bool[,] gridPath = new bool[GRID_WIDTH, GRID_HEIGHT];
+            for (int x = 0; x < gridPath.GetLength(0); x++)
+            {
+                for (int y = 0; y < gridPath.GetLength(1); y++)
+                {
+                    gridPath[x, y] = grid[x, y];
+                }
+            }
+            int[] currentNode;
+            while(q.Count != 0)
+            {
+                currentNode = q.Dequeue();
+                if (gridPath[currentNode[0], currentNode[1]])
+                {
+                    gridPath[currentNode[0], currentNode[1]] = false;
+                    if (currentNode[0] == endPoint[0] && currentNode[1] == endPoint[1])
+                        return true;
+                    else
+                    {
+                        if (currentNode[0] > 0)
+                            q.Enqueue(new int[] {currentNode[0]-1, currentNode[1]});
+                        if (currentNode[1] > 0)
+                            q.Enqueue(new int[] {currentNode[0], currentNode[1]-1});
+                        if (currentNode[0] < GRID_WIDTH - 1)
+                            q.Enqueue(new int[] { currentNode[0] + 1, currentNode[1] });
+                        if (currentNode[1] < GRID_HEIGHT - 1)
+                            q.Enqueue(new int[] { currentNode[0], currentNode[1] + 1 });
+                    }
+                }
+            }
+            return false;
+        }
+
+        private void Form1_KeyDown(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.W)
+            {
+                Debug.Print("w");
+                keyPressed[0] = true;
+            }
+            if (e.KeyCode == Keys.A)
+            {
+                Debug.Print("s");
+                keyPressed[1] = true;
+            }
+            if (e.KeyCode == Keys.S)
+            {
+                Debug.Print("a");
+                keyPressed[2] = true;
+            }
+            if (e.KeyCode == Keys.D)
+            {
+                Debug.Print("d");
+                keyPressed[3] = true;
+            }
+        }
+
+        private void Form1_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.KeyCode == Keys.W)
+            {
+                keyPressed[0] = false;
+            }
+            if (e.KeyCode == Keys.A)
+            {
+                keyPressed[1] = false;
+            }
+            if (e.KeyCode == Keys.S)
+            {
+                keyPressed[2] = false;
+            }
+            if (e.KeyCode == Keys.D)
+            {
+                keyPressed[3] = false;
+            }
         }
     }
 }
