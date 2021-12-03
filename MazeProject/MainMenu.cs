@@ -20,9 +20,12 @@ namespace MazeProject
         private void button1_Click(object sender, EventArgs e)
         {
             Hide();
-            Form1 form1 = new Form1();
-            form1.ShowDialog();
-            form1 = null;
+            //Form1 form1 = new Form1();
+            //form1.ShowDialog();
+            //form1 = null;
+            CustomMaze customMaze = new CustomMaze();
+            customMaze.ShowDialog();
+            customMaze = null;
             Show();
         }
     }

@@ -7,17 +7,21 @@ namespace MazeProject
 { 
     public partial class Form1 : Form
     {
-        const int GRID_WIDTH = 80;
-        const int GRID_HEIGHT = 80;
+        int GRID_WIDTH = -1;
+        int GRID_HEIGHT = -1;
         const int GRID_SIZE = 5;
-        private bool[,] grid = new bool[GRID_WIDTH,GRID_HEIGHT];
+        private readonly CustomMaze customMaze;
+        private bool[,] grid;
         private int[] player = { 0, 0 };
         private int[] goal;
         private Random RNG = new Random();
         bool[] keyPressed = {false, false, false, false};
 
-        public Form1()
+        public Form1(CustomMaze customMaze)
 		{
+            GRID_WIDTH = customMaze.getMazeWidth();
+            GRID_HEIGHT = customMaze.getMazeHeight();
+            grid = new bool[GRID_WIDTH, GRID_HEIGHT];
             Application.EnableVisualStyles();
             InitializeComponent();
             goal = new int[] { RNG.Next(GRID_WIDTH / 2, GRID_WIDTH - 1), RNG.Next(GRID_HEIGHT / 2, GRID_HEIGHT - 1) };
@@ -38,7 +42,8 @@ namespace MazeProject
             {
                 grid[RNG.Next(0, GRID_WIDTH), RNG.Next(0, GRID_HEIGHT)] = true;
             }
-            timer1.Enabled = true;            
+            timer1.Enabled = true;
+            this.customMaze = customMaze;
         }
 
 
