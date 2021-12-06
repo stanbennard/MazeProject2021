@@ -20,7 +20,11 @@ namespace MazeProject
         int mazeHeight;
         public int getMazeHeight()
         {
-            return mazeWidth;
+            return mazeHeight;
+        }
+        public string getSeed()
+        {
+            return textBox2.Text;
         }
         public CustomMaze()
         {

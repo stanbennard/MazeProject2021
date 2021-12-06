@@ -15,35 +15,69 @@ namespace MazeProject
         private int[] player = { 0, 0 };
         private int[] goal;
         private Random RNG = new Random();
+        string seed;
         bool[] keyPressed = {false, false, false, false};
 
         public Form1(CustomMaze customMaze)
 		{
-            GRID_WIDTH = customMaze.getMazeWidth();
-            GRID_HEIGHT = customMaze.getMazeHeight();
-            grid = new bool[GRID_WIDTH, GRID_HEIGHT];
-            Application.EnableVisualStyles();
-            InitializeComponent();
-            goal = new int[] { RNG.Next(GRID_WIDTH / 2, GRID_WIDTH - 1), RNG.Next(GRID_HEIGHT / 2, GRID_HEIGHT - 1) };
-            for (int x = 0; x < grid.GetLength(0); x++)
-            {
-                for(int y = 0; y < grid.GetLength(1); y++)
+            string inputSeed = customMaze.getSeed();
+            if (inputSeed == "") {
+                //Debug.Print("big oof");
+                GRID_WIDTH = customMaze.getMazeWidth();
+                GRID_HEIGHT = customMaze.getMazeHeight();
+                grid = new bool[GRID_WIDTH, GRID_HEIGHT];
+                Application.EnableVisualStyles();
+                InitializeComponent();
+                goal = new int[] { RNG.Next(GRID_WIDTH / 2, GRID_WIDTH - 1), RNG.Next(GRID_HEIGHT / 2, GRID_HEIGHT - 1) }; //This is the coordinates of the red goal
+                Debug.Print(Convert.ToString(goal[0]));
+                Debug.Print(Convert.ToString(goal[1]));
+                seed = (goal[0] + "," + goal[1] + ";");
+                for (int x = 0; x < grid.GetLength(0); x++)
                 {
-                    if (x == goal[0] && y == goal[1])
-                        grid[x, y] = true;
-                    else if (x == player[0] && y == player[1])
-                        grid[x, y] = true;
-                    else
-                        grid[x, y] = false;
+                    for (int y = 0; y < grid.GetLength(1); y++)
+                    {
+                        if (x == goal[0] && y == goal[1])
+                            grid[x, y] = true;
+                        else if (x == player[0] && y == player[1])
+                            grid[x, y] = true;
+                        else
+                            grid[x, y] = false;
+                    }
                 }
+                //grid[10, 10] = true; this removes the wall
+                List<int> seedList = new List<int>();
+                List<int> seedList2 = new List<int>();
+                while (pathFind(player, goal) == false)
+                {
+                    int firstRdm = RNG.Next(0, GRID_WIDTH);
+                    int secondRdm = RNG.Next(0, GRID_WIDTH);
+                    //grid[RNG.Next(0, GRID_WIDTH), RNG.Next(0, GRID_HEIGHT)] = true;
+                    grid[firstRdm, secondRdm] = true;
+                    //Debug.Print(Convert.ToString(firstRdm));
+                    seedList.Add(firstRdm);
+                    //Debug.Print(Convert.ToString(secondRdm));
+                    seedList2.Add(secondRdm);
+                }
+
+                Int32 length = seedList.Count;
+                for (var i = 0; i < length; i++)
+                {
+                    seed = seed + Convert.ToString(seedList[i]);
+                    seed = seed + ",";
+                    seed = seed + Convert.ToString(seedList2[i]);
+                    seed = seed + ";";
+                }
+                Debug.Print(seed);
+                textBox1.Text = seed;
+                timer1.Enabled = true;
+                this.customMaze = customMaze;
             }
-            //grid[10, 10] = true; this removes the wall
-            while (pathFind(player,goal) == false)
+            else
             {
-                grid[RNG.Next(0, GRID_WIDTH), RNG.Next(0, GRID_HEIGHT)] = true;
+
             }
-            timer1.Enabled = true;
-            this.customMaze = customMaze;
+            //Debug.Print(inputSeed);
+
         }
 
 
@@ -126,22 +160,22 @@ namespace MazeProject
         {
             if (e.KeyCode == Keys.W)
             {
-                Debug.Print("w");
+                //Debug.Print("w");
                 keyPressed[0] = true;
             }
             if (e.KeyCode == Keys.A)
             {
-                Debug.Print("s");
+                //Debug.Print("s");
                 keyPressed[1] = true;
             }
             if (e.KeyCode == Keys.S)
             {
-                Debug.Print("a");
+                //Debug.Print("a");
                 keyPressed[2] = true;
             }
             if (e.KeyCode == Keys.D)
             {
-                Debug.Print("d");
+                //Debug.Print("d");
                 keyPressed[3] = true;
             }
         }
@@ -164,6 +198,21 @@ namespace MazeProject
             {
                 keyPressed[3] = false;
             }
+        }
+
+        private void pictureBox1_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void textBox1_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            Clipboard.SetText(seed);
         }
     }
 }
