@@ -74,7 +74,42 @@ namespace MazeProject
             }
             else
             {
+                string[] coords = inputSeed.Split();
+                int coord1 = Convert.ToInt32(coords[0]);
+                int coord2 = Convert.ToInt32(coords[1]);
+                Int32 length = coords.Count();
+                List<int> seedList = new List<int>();
+                List<int> seedList2 = new List<int>();
 
+                for (var i = 0; i < length; i++)
+                {
+                    int intcoord = Convert.ToInt32(coords[i]);
+                    if (intcoord == coord1)
+                    {
+                        goal = new int[] { coord1, coord2 }; //This is the coordinates of the red goal
+                    }
+                    else if (intcoord == coord2)
+                    {
+                    }
+                    else
+                    {
+                        int current = Convert.ToInt32(coords[i]);
+                        if (i % 2 == 1)
+                        {
+                            seedList2.Add(current);
+                        }
+                        else
+                        {
+                            seedList.Add(current);
+                        }
+                    }
+
+                }
+                Int32 amount = seedList.Count();
+                for (var i = 0; i < amount; i++)
+                {
+                    grid[seedList[i], seedList2[i]] = true;
+                }
             }
             //Debug.Print(inputSeed);
 
