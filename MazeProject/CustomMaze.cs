@@ -22,6 +22,10 @@ namespace MazeProject
         {
             return mazeHeight;
         }
+        public string getSeed()
+        {
+            return textBox2.Text;
+        }
         public CustomMaze()
         {
             InitializeComponent();
