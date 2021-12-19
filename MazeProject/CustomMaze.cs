@@ -20,7 +20,7 @@ namespace MazeProject
         int mazeHeight;
         public int getMazeHeight()
         {
-            return mazeWidth;
+            return mazeHeight;
         }
         public CustomMaze()
         {

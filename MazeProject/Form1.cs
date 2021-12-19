@@ -24,7 +24,10 @@ namespace MazeProject
             grid = new bool[GRID_WIDTH, GRID_HEIGHT];
             Application.EnableVisualStyles();
             InitializeComponent();
-            goal = new int[] { RNG.Next(GRID_WIDTH / 2, GRID_WIDTH - 1), RNG.Next(GRID_HEIGHT / 2, GRID_HEIGHT - 1) };
+            goal = new int[] { 51, 68 };
+            //goal = new int[] { RNG.Next(GRID_WIDTH / 2, GRID_WIDTH - 1), RNG.Next(GRID_HEIGHT / 2, GRID_HEIGHT - 1) }; //This generates exit coords
+            Debug.Print(Convert.ToString(goal[0]));
+            Debug.Print(Convert.ToString(goal[1]));
             for (int x = 0; x < grid.GetLength(0); x++)
             {
                 for(int y = 0; y < grid.GetLength(1); y++)
