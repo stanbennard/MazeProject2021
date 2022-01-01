@@ -13,6 +13,7 @@ namespace MazeProject
         private readonly CustomMaze customMaze;
         private bool[,] grid;
         private int[] player = { 0, 0 };
+        private int[] ai = { 0, 0 };
         private int[] goal;
         static int seednum;
         //private Random RNG = new Random(seednum);
@@ -47,6 +48,8 @@ namespace MazeProject
                             grid[x, y] = true;
                         else
                             grid[x, y] = false;
+                        if (x == ai[0] && y == ai[1])
+                            grid[x, y] = true;
                     }
                 }
                 //grid[10, 10] = true; this removes the wall
@@ -84,6 +87,8 @@ namespace MazeProject
                             grid[x, y] = true;
                         else
                             grid[x, y] = false;
+                        if (x == ai[0] && y == ai[1])
+                            grid[x, y] = true;
                     }
                 }
                 //grid[10, 10] = true; this removes the wall
@@ -147,45 +152,80 @@ namespace MazeProject
                 //Debug.Print(inputSeed);
 
             }
-
-
-            private void timer1_Tick(object sender, EventArgs e)
+            public void randomMove()
             {
-                //W
-                if (keyPressed[0] && player[1] > 0)
-                    if (grid[player[0], player[1] - 1] == true) //stops player from hitting wall
-                        player[1] -= 1;
-                //A
-                if (keyPressed[1] && player[0] > 0)
-                    if (grid[player[0] - 1, player[1]] == true) //stops player from hitting wall
-                        player[0] -= 1;
-                //S
-                if (keyPressed[2] && player[1] < GRID_HEIGHT - 1)
-                    if (grid[player[0], player[1] + 1] == true) //stops player from hitting wall
-                        player[1] += 1;
-                //D
-                if (keyPressed[3] && player[0] < GRID_WIDTH - 1)
-                    if (grid[player[0] + 1, player[1]] == true) //stops player from hitting wall
-                        player[0] += 1;
-
-                Bitmap b = new Bitmap(pictureBox1.Width, pictureBox1.Height);
-                Graphics g = Graphics.FromImage(b);
-                for (int x = 0; x < grid.GetLength(0); x++)
-                {
-                    for (int y = 0; y < grid.GetLength(1); y++)
-                    {
-                        if (grid[x, y]) // If true
-                            g.FillRectangle(Brushes.White, x * GRID_SIZE, y * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                        else //If false
-                            g.FillRectangle(Brushes.Black, x * GRID_SIZE, y * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                        if (x == goal[0] && y == goal[1])
-                            g.FillRectangle(Brushes.Red, x * GRID_SIZE, y * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                        if (x == player[0] && y == player[1])
-                            g.FillRectangle(Brushes.Green, x * GRID_SIZE, y * GRID_SIZE, GRID_SIZE, GRID_SIZE);
-                    }
-                }
-                pictureBox1.Image = b;
+            Random RMOVE = new Random();
+            int rmovenum = RMOVE.Next(1,4);
+            //Forward
+            if (rmovenum == 1 && ai[1] > 0)
+                if (grid[ai[0], ai[1] - 1] == true) //stops player from hitting wall
+                    ai[1] -= 1;
+            //Left
+            if (rmovenum == 2 && ai[0] > 0)
+                if (grid[ai[0] - 1, ai[1]] == true) //stops player from hitting wall
+                    ai[0] -= 1;
+            //Right
+            if (rmovenum == 3 && ai[1] < GRID_HEIGHT - 1)
+                if (grid[ai[0], ai[1] + 1] == true) //stops player from hitting wall
+                    ai[1] += 1;
+            //Down
+            if (rmovenum == 4 && ai[0] < GRID_WIDTH - 1)
+                if (grid[ai[0] + 1, ai[1]] == true) //stops player from hitting wall
+                    ai[0] += 1;
             }
+
+        private void timer1_Tick(object sender, EventArgs e)
+        {
+            //W
+            if (keyPressed[0] && player[1] > 0)
+                if (grid[player[0], player[1] - 1] == true) //stops player from hitting wall
+                    {
+                    player[1] -= 1;
+                    randomMove(); 
+                    }
+            //A
+            if (keyPressed[1] && player[0] > 0)
+                if (grid[player[0] - 1, player[1]] == true) //stops player from hitting wall
+                {
+                    player[0] -= 1;
+                    randomMove();
+                }
+            //S
+            if (keyPressed[2] && player[1] < GRID_HEIGHT - 1)
+                if (grid[player[0], player[1] + 1] == true) //stops player from hitting wall
+                {
+                    player[1] += 1;
+                    randomMove();
+                }
+            //D
+            if (keyPressed[3] && player[0] < GRID_WIDTH - 1)
+                if (grid[player[0] + 1, player[1]] == true) //stops player from hitting wall
+                {
+                    player[0] += 1;
+                    randomMove();
+                }
+            Bitmap b = new Bitmap(pictureBox1.Width, pictureBox1.Height);
+            Graphics g = Graphics.FromImage(b);
+            int scale = 2;
+            for (int x = 0; x < grid.GetLength(0); x++)
+            {
+                for (int y = 0; y < grid.GetLength(1); y++)
+                {
+                    if (grid[x, y]) // If true
+                        g.FillRectangle(Brushes.White, x * GRID_SIZE * scale, y * GRID_SIZE * scale, GRID_SIZE * scale, GRID_SIZE * scale);
+                    else //If false
+                        g.FillRectangle(Brushes.Black, x * GRID_SIZE * scale, y * GRID_SIZE * scale, GRID_SIZE * scale, GRID_SIZE * scale);
+                    if (x == goal[0] && y == goal[1])
+                        g.FillRectangle(Brushes.Red, x * GRID_SIZE * scale, y * GRID_SIZE * scale, GRID_SIZE * scale, GRID_SIZE * scale);
+                    if (x == player[0] && y == player[1])
+                        g.FillRectangle(Brushes.Green, x * GRID_SIZE * scale, y * GRID_SIZE * scale, GRID_SIZE * scale, GRID_SIZE * scale);
+                    if (x == ai[0] && y == ai[1])
+                        g.FillRectangle(Brushes.Purple, x * GRID_SIZE * scale, y * GRID_SIZE * scale, GRID_SIZE * scale, GRID_SIZE * scale);
+
+                }
+            }
+            pictureBox1.Image = b;
+        }
 
             private bool pathFind(int[] startPoint, int[] endPoint)
             {
