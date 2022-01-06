@@ -14,6 +14,7 @@ namespace MazeProject
     {
         public MainMenu()
         {
+            PathFinderTest.mine();
             InitializeComponent();
         }
 

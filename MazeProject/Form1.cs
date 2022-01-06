@@ -19,6 +19,7 @@ namespace MazeProject
         //private Random RNG = new Random(seednum);
         string seed;
         bool[] keyPressed = { false, false, false, false };
+        PathFinder pathFinder;
 
         public Form1(CustomMaze customMaze)
         {
@@ -32,6 +33,7 @@ namespace MazeProject
                 GRID_WIDTH = customMaze.getMazeWidth();
                 GRID_HEIGHT = customMaze.getMazeHeight();
                 grid = new bool[GRID_WIDTH, GRID_HEIGHT];
+                pathFinder = new PathFinder(GRID_WIDTH, GRID_HEIGHT, grid);
                 Application.EnableVisualStyles();
                 InitializeComponent();
                 goal = new int[] { RNG.Next(GRID_WIDTH / 2, GRID_WIDTH - 1), RNG.Next(GRID_HEIGHT / 2, GRID_HEIGHT - 1) }; //This is the coordinates of the red goal
@@ -53,7 +55,7 @@ namespace MazeProject
                     }
                 }
                 //grid[10, 10] = true; this removes the wall
-                while (pathFind(player, goal) == false)
+                while (!pathFinder.pathExists(player, goal))
                 {
                     int firstRdm = RNG.Next(0, GRID_WIDTH);
                     int secondRdm = RNG.Next(0, GRID_WIDTH);
@@ -92,7 +94,7 @@ namespace MazeProject
                     }
                 }
                 //grid[10, 10] = true; this removes the wall
-                while (pathFind(player, goal) == false)
+                while (pathFinder.pathExists(player, goal) == false)
                 {
                     int firstRdm = RNG.Next(0, GRID_WIDTH);
                     int secondRdm = RNG.Next(0, GRID_WIDTH);
@@ -152,11 +154,60 @@ namespace MazeProject
                 //Debug.Print(inputSeed);
 
             }
+
+
+        private List<int[]> aiPath;
+        bool aiWonYet = false;
+        public void aiMove()
+        {
+            //randomMove();
+            
+            if(aiPath == null)
+            {
+                pathFinder.getNextMove(ai, goal);
+                aiPath = pathFinder.getCorrectPathList();
+                aiPath.RemoveAt(aiPath.Count - 1);
+            }
+            if (aiPath.Count != 0)
+            { 
+              ai = aiPath.ElementAt(aiPath.Count - 1);
+              aiPath.RemoveAt(aiPath.Count - 1);
+            }
+            if (aiPath.Count == 0)
+            {
+                if (aiWonYet == false)
+                {
+                    aiWonYet=true;
+                    MessageBox.Show("The AI has won! YOU LOSE"); 
+                    this.Close();
+                }
+                 
+            }
+            /*
+            switch (pathFinder.getNextMove(ai, goal))
+            { 
+                case PathFinder.MazeDirection.UP:
+                    ai[1] -= 1;
+                    break;
+                case PathFinder.MazeDirection.DOWN:
+                    ai[1] += 1;
+                    break;
+                case PathFinder.MazeDirection.RIGHT:
+                    ai[0] += 1;
+                    break;
+                case PathFinder.MazeDirection.LEFT:
+                    ai[0] -= 1;
+                    break;
+
+            }
+            */
+        }
+
             public void randomMove()
             {
             Random RMOVE = new Random();
-            int rmovenum = RMOVE.Next(1,4);
-            //Forward
+            int rmovenum = RMOVE.Next(1,5);
+            //Up
             if (rmovenum == 1 && ai[1] > 0)
                 if (grid[ai[0], ai[1] - 1] == true) //stops player from hitting wall
                     ai[1] -= 1;
@@ -164,11 +215,11 @@ namespace MazeProject
             if (rmovenum == 2 && ai[0] > 0)
                 if (grid[ai[0] - 1, ai[1]] == true) //stops player from hitting wall
                     ai[0] -= 1;
-            //Right
+            //Down
             if (rmovenum == 3 && ai[1] < GRID_HEIGHT - 1)
                 if (grid[ai[0], ai[1] + 1] == true) //stops player from hitting wall
                     ai[1] += 1;
-            //Down
+            //Right
             if (rmovenum == 4 && ai[0] < GRID_WIDTH - 1)
                 if (grid[ai[0] + 1, ai[1]] == true) //stops player from hitting wall
                     ai[0] += 1;
@@ -176,34 +227,41 @@ namespace MazeProject
 
         private void timer1_Tick(object sender, EventArgs e)
         {
+            bool playerWonYet = false;
             //W
             if (keyPressed[0] && player[1] > 0)
                 if (grid[player[0], player[1] - 1] == true) //stops player from hitting wall
                     {
                     player[1] -= 1;
-                    randomMove(); 
+                    aiMove(); 
                     }
             //A
             if (keyPressed[1] && player[0] > 0)
                 if (grid[player[0] - 1, player[1]] == true) //stops player from hitting wall
                 {
                     player[0] -= 1;
-                    randomMove();
+                    aiMove();
                 }
             //S
             if (keyPressed[2] && player[1] < GRID_HEIGHT - 1)
                 if (grid[player[0], player[1] + 1] == true) //stops player from hitting wall
                 {
                     player[1] += 1;
-                    randomMove();
+                    aiMove();
                 }
             //D
             if (keyPressed[3] && player[0] < GRID_WIDTH - 1)
                 if (grid[player[0] + 1, player[1]] == true) //stops player from hitting wall
                 {
                     player[0] += 1;
-                    randomMove();
+                    aiMove();
                 }
+            if (playerWonYet == false && player[0] == goal[0] && player[1] == goal[1])
+            {
+                playerWonYet=true;
+                MessageBox.Show("You found the exit! YOU WON"); 
+                this.Close();
+            }
             Bitmap b = new Bitmap(pictureBox1.Width, pictureBox1.Height);
             Graphics g = Graphics.FromImage(b);
             int scale = 2;
@@ -226,44 +284,6 @@ namespace MazeProject
             }
             pictureBox1.Image = b;
         }
-
-            private bool pathFind(int[] startPoint, int[] endPoint)
-            {
-                Queue<int[]> q = new Queue<int[]>();
-                q.Enqueue(new int[] { startPoint[0], startPoint[1] });
-                bool[,] gridPath = new bool[GRID_WIDTH, GRID_HEIGHT];
-                for (int x = 0; x < gridPath.GetLength(0); x++)
-                {
-                    for (int y = 0; y < gridPath.GetLength(1); y++)
-                    {
-                        gridPath[x, y] = grid[x, y];
-                    }
-                }
-                int[] currentNode;
-                while (q.Count != 0)
-                {
-                    currentNode = q.Dequeue();
-                    if (gridPath[currentNode[0], currentNode[1]])
-                    {
-                        gridPath[currentNode[0], currentNode[1]] = false;
-                        if (currentNode[0] == endPoint[0] && currentNode[1] == endPoint[1])
-                            return true;
-                        else
-                        {
-                            if (currentNode[0] > 0)
-                                q.Enqueue(new int[] { currentNode[0] - 1, currentNode[1] });
-                            if (currentNode[1] > 0)
-                                q.Enqueue(new int[] { currentNode[0], currentNode[1] - 1 });
-                            if (currentNode[0] < GRID_WIDTH - 1)
-                                q.Enqueue(new int[] { currentNode[0] + 1, currentNode[1] });
-                            if (currentNode[1] < GRID_HEIGHT - 1)
-                                q.Enqueue(new int[] { currentNode[0], currentNode[1] + 1 });
-                        }
-                    }
-                }
-                return false;
-            }
-
             private void Form1_KeyDown(object sender, KeyEventArgs e)
             {
                 if (e.KeyCode == Keys.W)
