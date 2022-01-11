@@ -1,11 +1,51 @@
-<mxfile host="app.diagrams.net" modified="2022-01-10T12:36:13.383Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36" etag="kUtN9-cHLXGYgPKH0oIb" version="16.2.4" type="github">
+<mxfile host="app.diagrams.net" modified="2022-01-11T13:59:10.563Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36" etag="oPaWjJatHqb4Vwxqtd5U" version="16.2.4" type="github">
   <diagram id="7w5shZzXePETHSVYoWxc" name="Page-1">
     <mxGraphModel dx="782" dy="706" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
-        <mxCell id="KBZl2YYVLOGSF0I40q8S-2" value="Start" style="ellipse;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+        <mxCell id="6B_npjOtoBmQOe1TR8oO-1" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0.5;exitY=1;exitDx=0;exitDy=0;" edge="1" parent="1" source="KBZl2YYVLOGSF0I40q8S-2">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="400" y="440" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="KBZl2YYVLOGSF0I40q8S-2" value="Start" style="ellipse;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="340" y="320" width="120" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="6B_npjOtoBmQOe1TR8oO-4" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="6B_npjOtoBmQOe1TR8oO-2" target="6B_npjOtoBmQOe1TR8oO-3">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="6B_npjOtoBmQOe1TR8oO-2" value="GRID_WIDTH = Get Grid Width" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="440" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="6B_npjOtoBmQOe1TR8oO-6" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="6B_npjOtoBmQOe1TR8oO-3" target="6B_npjOtoBmQOe1TR8oO-5">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="6B_npjOtoBmQOe1TR8oO-3" value="GRID_HEIGHT = Get Grid Height" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="530" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="6B_npjOtoBmQOe1TR8oO-7" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="6B_npjOtoBmQOe1TR8oO-5">
+          <mxGeometry relative="1" as="geometry">
+            <mxPoint x="400" y="710" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="6B_npjOtoBmQOe1TR8oO-5" value="grid = new bool[GRID_WIDTH, GRID_HEIGHT]" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="340" y="620" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="6B_npjOtoBmQOe1TR8oO-11" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="6B_npjOtoBmQOe1TR8oO-9" target="6B_npjOtoBmQOe1TR8oO-10">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="6B_npjOtoBmQOe1TR8oO-9" value="Randomize end goal coordinates" style="shape=parallelogram;perimeter=parallelogramPerimeter;whiteSpace=wrap;html=1;fixedSize=1;" vertex="1" parent="1">
+          <mxGeometry x="321" y="710" width="150" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="6B_npjOtoBmQOe1TR8oO-13" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="6B_npjOtoBmQOe1TR8oO-10" target="6B_npjOtoBmQOe1TR8oO-12">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="6B_npjOtoBmQOe1TR8oO-10" value="goal = new int" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="336" y="800" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="6B_npjOtoBmQOe1TR8oO-12" value="goal = new int" style="whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="336" y="890" width="120" height="60" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
