@@ -1,4 +1,4 @@
-<mxfile host="app.diagrams.net" modified="2022-01-12T11:10:36.677Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36" etag="VZ-20BHfcEBhsTs3JYgj" version="16.2.4" type="github">
+<mxfile host="app.diagrams.net" modified="2022-01-12T11:12:29.087Z" agent="5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/97.0.4692.71 Safari/537.36" etag="1nd7kVA9DNiRiDXfHt8a" version="16.2.4" type="github">
   <diagram id="7w5shZzXePETHSVYoWxc" name="Page-1">
     <mxGraphModel dx="782" dy="706" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="850" pageHeight="1100" math="0" shadow="0">
       <root>
@@ -54,8 +54,14 @@
         <mxCell id="R8sPB7nf0KhpVJkGB3Jy-2" value="For (Squares&lt;br&gt;in grid)" style="rhombus;whiteSpace=wrap;html=1;" parent="1" vertex="1">
           <mxGeometry x="356" y="890" width="80" height="80" as="geometry" />
         </mxCell>
+        <mxCell id="EBhT7KF3SH_6E2Iv8zCc-3" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="EBhT7KF3SH_6E2Iv8zCc-1" target="EBhT7KF3SH_6E2Iv8zCc-2">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
         <mxCell id="EBhT7KF3SH_6E2Iv8zCc-1" value="&lt;span&gt;if square = goal&lt;/span&gt;&lt;br&gt;&lt;span&gt;Set wall to false&lt;/span&gt;" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
           <mxGeometry x="344" y="1000" width="104" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="EBhT7KF3SH_6E2Iv8zCc-2" value="&lt;span&gt;if square = player start location&lt;/span&gt;&lt;br&gt;&lt;span&gt;Set wall to false&lt;/span&gt;" style="rhombus;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="344" y="1140" width="104" height="110" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
